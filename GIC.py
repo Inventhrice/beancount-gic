@@ -113,6 +113,16 @@ class GIC():
     def get_close_entry(self):
         parseString = f"{self.dateEnd} close {self.name}"
         return parse(parseString)
+    
+    def get_entries(self):
+        today = datetime.date.today()
+        entries = []
+        entries.append(self.get_open_entry())
+        entries.append(self.get_principaldeposit_entry())
+        if(today < datetime.date.fromisoformat(self.dateEnd)):
+            entries.append(self.get_interestpayment_entry())
+            entries.append(self.get_close_entry())
+        return entries
 
 
 def GIC_plugin(entries, option_map):
@@ -129,11 +139,7 @@ def GIC_plugin(entries, option_map):
     new_entries = []
     for entry in gic_entries:
         gic = GIC(entry.date, *(entry.values))
-
-        new_entries.append(gic.get_open_entry())
-        new_entries.append(gic.get_principaldeposit_entry())
-        new_entries.append(gic.get_interestpayment_entry())
-        new_entries.append(gic.get_close_entry())
+        new_entries.extend(gic.get_entries())
 
     new_entries.sort(key=data.entry_sortkey)
     return (nongic_entries + new_entries, [])

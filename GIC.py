@@ -119,7 +119,7 @@ class GIC():
         entries = []
         entries.append(self.get_open_entry())
         entries.append(self.get_principaldeposit_entry())
-        if(today < datetime.date.fromisoformat(self.dateEnd)):
+        if(today > datetime.date.fromisoformat(self.dateEnd)):
             entries.append(self.get_interestpayment_entry())
             entries.append(self.get_close_entry())
         return entries

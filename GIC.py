@@ -66,7 +66,7 @@ def parse(input_string):
 
 
 def calc_interest(interest, months, amount):
-    return ((interest/100)+1)*(months/12)*amount
+    return ((interest/100)*(months/12)+1)*amount
 
 class GIC():
     dateStart: str
